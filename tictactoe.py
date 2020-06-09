@@ -8,6 +8,9 @@ X = "X"
 O = "O"
 EMPTY = None
 
+test = [[EMPTY, EMPTY, EMPTY],
+        [EMPTY, EMPTY, EMPTY],
+        [EMPTY, EMPTY, EMPTY]]
 
 def initial_state():
     """
@@ -22,7 +25,19 @@ def player(board):
     """
     Returns player who has the next turn on a board.
     """
-    raise NotImplementedError
+    numX, numO = 0, 0
+    for i in board:
+        for n in range(2):
+            if i[n] == X:
+                numX += 1
+            elif i[n] == O:
+                numO += 1
+    if numX == numO:
+        return X
+    else:
+        return O
+
+print(player(test))
 
 
 def actions(board):
