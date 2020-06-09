@@ -21,8 +21,19 @@ def initial_state():
 def player(board):
     """
     Returns player who has the next turn on a board.
+    Assumes that in the initial game state, X gets the first move, as per the spec.
     """
-    raise NotImplementedError
+    numX, numO = 0, 0
+    for i in board:
+        for n in range(len(i)):
+            if i[n] == X:
+                numX += 1
+            elif i[n] == O:
+                numO += 1
+    if numX == numO:
+        return X
+    else:
+        return O
 
 
 def actions(board):
