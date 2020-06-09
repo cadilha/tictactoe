@@ -8,10 +8,6 @@ X = "X"
 O = "O"
 EMPTY = None
 
-test = [[EMPTY, EMPTY, EMPTY],
-        [EMPTY, EMPTY, EMPTY],
-        [EMPTY, EMPTY, EMPTY]]
-
 def initial_state():
     """
     Returns starting state of the board.
@@ -24,10 +20,11 @@ def initial_state():
 def player(board):
     """
     Returns player who has the next turn on a board.
+    Assumes that in the initial game state, X gets the first move, as per the spec.
     """
     numX, numO = 0, 0
     for i in board:
-        for n in range(2):
+        for n in range(len(i)):
             if i[n] == X:
                 numX += 1
             elif i[n] == O:
@@ -36,8 +33,6 @@ def player(board):
         return X
     else:
         return O
-
-print(player(test))
 
 
 def actions(board):
