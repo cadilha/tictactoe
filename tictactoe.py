@@ -64,8 +64,23 @@ def result(board, action):
 def winner(board):
     """
     Returns the winner of the game, if there is one.
+    Assumes there is at most one winner as per the spec.
     """
-    raise NotImplementedError
+    for i in range(len(board)): # Checks if any player won with 3 in a row
+        if board[i][0] == board[i][1] and board[i][1] == board[i][2]:
+            return board[i][0]
+
+    for i in range(len(board)): # Checks if any player won with 3 in a column
+        if board[0][i] == board[1][i] and board[1][i] == board[2][i]:
+            return board[0][i]
+
+    if board[0][0] == board[1][1] and board[1][1] == board[2][2]: # Checks one diagonal
+        return board[1][1]
+
+    if board[0][2] == board [1][1] and board[1][1] == board[2][0]: # Checks the remaining diagonal
+        return board[1][1]
+
+    return None # Returns None if there is no winner
 
 
 def terminal(board):
