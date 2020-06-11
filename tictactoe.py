@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jun 11 19:09:20 2020
+Created on Thu Jun 11 20:09:06 2020
 
 @author: hcadi
 """
@@ -129,10 +129,10 @@ def maxValue(board):
         return  (utility(board), ())
     v = (float('-inf'), ())
     for action in actions(board):
+        if v[0] == 1:
+            return v
         tempV = copy.deepcopy(v)
         v = (max(v[0], minValue(result(board, action))[0]), v[1])
-        if tempV[0] == 1:
-            return v
         if v[0] > tempV[0]:
             v = (v[0], action)
     return v
@@ -142,10 +142,10 @@ def minValue(board):
         return (utility(board), ())
     v = (float('inf'), ())
     for action in actions(board):
+        if v[0] == -1:
+            return v
         tempV = copy.deepcopy(v)
         v = (min(v[0], maxValue(result(board, action))[0]), v[1])
-        if tempV[0] == -1:
-            return v
         if v[0] < tempV[0]:
             v = (v[0], action)
     return v
