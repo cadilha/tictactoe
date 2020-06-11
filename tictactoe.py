@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jun 11 19:09:20 2020
+
+@author: hcadi
+"""
+
 """
 Tic Tac Toe Player
 """
@@ -124,6 +131,8 @@ def maxValue(board):
     for action in actions(board):
         tempV = copy.deepcopy(v)
         v = (max(v[0], minValue(result(board, action))[0]), v[1])
+        if tempV[0] == 1:
+            return v
         if v[0] > tempV[0]:
             v = (v[0], action)
     return v
@@ -135,6 +144,8 @@ def minValue(board):
     for action in actions(board):
         tempV = copy.deepcopy(v)
         v = (min(v[0], maxValue(result(board, action))[0]), v[1])
+        if tempV[0] == -1:
+            return v
         if v[0] < tempV[0]:
             v = (v[0], action)
     return v
