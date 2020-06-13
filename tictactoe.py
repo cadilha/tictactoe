@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jun 11 20:09:06 2020
+
+@author: hcadi
+"""
+
 """
 Tic Tac Toe Player
 """
@@ -109,4 +116,62 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    raise NotImplementedError
+    if terminal(board):
+        return None
+
+    if player(board) == X:
+        return maxValue(board)[1]
+    else:
+        return minValue(board)[1]
+
+def maxValue(board):
+    """
+    Returns the optimal action for the max player on the board,
+    along with its utility, and number of empty cells as a proxy
+    to how fast the given actions led to the reported utility.
+    Follows the format (utility, action, numEmpty).
+    """
+    if terminal(board):
+        return  (utility(board), (), numEmpty(board))
+    v = (float('-inf'), (), float('-inf'))                  # Variable that stores (utility, action, numEmpty)
+    for action in actions(board):
+        newV = minValue(result(board, action))
+        if max(v[0], newV[0]) != v[0]:                      # If the utility of the a new action is better,
+            v = (newV[0], action, newV[2])                  # then stores (utility, action, numEmpty).
+        elif v[0] == newV[0] and newV[2] > v[2]:            # If the new action leads to an equally optimal utility in fewer moves,
+            v = (v[0], action, newV[2])                     # then store it instead.
+        if v[0] == 1 and numEmpty(board) == (v[2] + 1):     # If the optimal utility has been found with the fewest moves possible, prune the remaining branches
+            return v
+    return v
+
+def minValue(board):
+    """
+    Returns the optimal action for the min player on the board,
+    along with its utility, and number of empty cells as a proxy
+    to how fast the given actions led to the reported utility.
+    Follows the format (utility, action, numEmpty).
+    """
+    if terminal(board):
+        return (utility(board), (), numEmpty(board))
+    v = (float('inf'), (), float('-inf'))                   # Variable that stores (utility, action, numEmpty)
+    for action in actions(board):
+        newV = maxValue(result(board, action))
+        if min(v[0], newV[0]) != v[0]:                      # If the utility of the a new action is better,
+            v = (newV[0], action, newV[2])                  # then stores (utility, action, numEmpty)
+        elif v[0] == newV[0] and newV[2] > v[2]:            # If the new action leads to an equally optimal outcome in fewer moves,
+            v = (v[0], action, newV[2])                     # then store it instead.
+        if v[0] == -1 and numEmpty(board) == (v[2] + 1):    # If the optimal utility has been found with the fewest moves possible, prune the remaining branches
+            return v
+    return v
+
+def numEmpty(board):
+    """
+    Returns the number of EMPTY cells in a given board.
+    Used as an heuristic to pick the shortest path to the desired utility.
+    """
+    numEmpty = 0
+    for u in range(len(board)):
+        for y in range(len(board[u])):
+            if board[u][y] == EMPTY:
+                numEmpty += 1
+    return numEmpty
